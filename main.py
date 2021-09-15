@@ -1,10 +1,12 @@
 import cv2
 import numpy as np
+import glob
 
-system_video_capture = cv2.VideoCapture(0)
+mp4_video = glob.glob(r"./*.mp4")[0]
+local_video_capture = cv2.VideoCapture(mp4_video)
 
 while True:
-    ret, frame = system_video_capture.read()
+    ret, frame = local_video_capture.read()
     gray = cv2.medianBlur(cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY), 5)
     circles = cv2.HoughCircles(gray, cv2.HOUGH_GRADIENT, 1.2, 100)
     if circles is not None:
@@ -15,5 +17,5 @@ while True:
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
-system_video_capture.release()
+local_video_capture.release()
 cv2.destroyAllWindows()
