@@ -6,14 +6,14 @@
       <visual name="visual">
             <geometry>
                 <mesh>
-                    <uri>model://meshes/48inch_pipe_stack.dae</uri>
+                    <uri>model://large_pipe_stack/meshes/48inch_pipe_stack.dae</uri>
                 </mesh>
             </geometry>
         </visual>
         <collision name="collision">
             <geometry>
                 <mesh>
-                    <uri>model://meshes/48inch_pipe_stack.dae</uri>
+                    <uri>model://large_pipe_stack/meshes/48inch_pipe_stack.dae</uri>
                 </mesh>
             </geometry>
         </collision>
