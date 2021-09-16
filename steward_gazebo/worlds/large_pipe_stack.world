@@ -124,10 +124,10 @@
       <pose>2.3121 1.15431 0 0 -0 0</pose>
     </model>
     <state world_name='default'>
-      <sim_time>533 503000000</sim_time>
-      <real_time>536 128745775</real_time>
-      <wall_time>1631746715 827000896</wall_time>
-      <iterations>533503</iterations>
+      <sim_time>893 740000000</sim_time>
+      <real_time>361 998446596</real_time>
+      <wall_time>1631796845 799351924</wall_time>
+      <iterations>360237</iterations>
       <model name='48inch_pipe_stack'>
         <pose>0 22.535 0.6096 0 -0 0</pose>
         <scale>1 1 1</scale>
@@ -149,12 +149,12 @@
         </link>
       </model>
       <light name='sun'>
-        <pose>0 0 10 0 -0 0</pose>
+        <pose>0 -8.73619 9.67088 0.89487 -0.382831 -0.417722</pose>
       </light>
     </state>
     <gui fullscreen='0'>
       <camera name='user_camera'>
-        <pose>-7.01794 -53.8827 32.8723 0 0.459642 1.3842</pose>
+        <pose>-34.6681 -7.79683 11.0702 0 0.147641 0.116197</pose>
         <view_controller>orbit</view_controller>
         <projection_type>perspective</projection_type>
       </camera>
