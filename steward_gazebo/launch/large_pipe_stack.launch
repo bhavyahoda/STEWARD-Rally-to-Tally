@@ -14,6 +14,8 @@
     <include file="$(find husky_gazebo)/launch/spawn_husky.launch">
         <arg name="laser_enabled" value="$(arg laser_enabled)"/>
         <arg name="realsense_enabled" value="$(arg realsense_enabled)"/>
+        <arg name='yaw' value="0.0" />
+        <arg name="joystick" value="false" />
     </include> 
 
 
