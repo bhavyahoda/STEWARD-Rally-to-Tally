@@ -1,3 +1,4 @@
 .idea
 venv
 .DS_Store
+steward_perception/src/steward_perception/__pycache__
