@@ -1,0 +1,11 @@
+<launch>
+
+    <node name="pipe_counter" pkg="steward_perception" type="pipe_counter.py" output="screen">
+        <remap from="image" to="realsense/color/image_raw" />
+    </node>
+
+    <node name="video_saver" pkg="steward_perception" type="video_saver.py" output="screen">
+        <remap from="image" to="pipe_counter/processed_image" />
+    </node>
+
+</launch>
