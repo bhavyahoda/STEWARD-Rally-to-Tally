@@ -1,0 +1,4 @@
+float64 charge
+float64 charge_mwh
+float64 battery_voltage
+float64 current_draw
