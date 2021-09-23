@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+    <robot name="husky" xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <gazebo reference="base_link">
+        <battery name="linear_battery">
+            <voltage>12.592</voltage>
+        </battery>
+    </gazebo>
+
+    <gazebo>
+        <plugin name="battery" filename="libbattery_discharge.so">
+            <ros_node>battery_monitor_client</ros_node>
+            <link_name>base_link</link_name>
+            <battery_name>linear_battery</battery_name>
+            <constant_coef>12.694</constant_coef>
+            <linear_coef>-100.1424</linear_coef>
+            <initial_charge>5.1665</initial_charge>
+            <capacity>5.2009</capacity>
+            <resistance>0.061523</resistance>
+            <smooth_current_tau>1.9499</smooth_current_tau>
+            <charge_rate>0.2</charge_rate>
+        </plugin>
+        <plugin name="consumer" filename="libbattery_consumer.so">
+            <link_name>base_link</link_name>
+            <battery_name>linear_battery</battery_name>
+            <power_load>10</power_load>
+        </plugin>
+    </gazebo>
+    
+    </robot>
