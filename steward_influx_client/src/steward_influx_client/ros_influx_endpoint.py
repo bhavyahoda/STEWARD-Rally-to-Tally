@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /home/singh/.virtualenvs/cv/bin/python
 
 import rospy
 import pytz
@@ -16,7 +16,7 @@ class ROSInfluxEndpoint:
 
         self.timezone = pytz.timezone("Asia/Kolkata")
 
-        self.influx_client = InfluxDBClient('192.168.29.33', 8086, 'admin', 'Password1', 'mydb')
+        self.influx_client = InfluxDBClient('192.168.1.17', 8086, 'admin', 'Password1', 'mydb')
         self.influx_client.switch_database('mydb')
 
         self.msg_sub = rospy.Subscriber(self.topic, self.msg_type, self.msg_cb)
