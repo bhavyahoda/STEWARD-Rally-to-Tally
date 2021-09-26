@@ -1,12 +1,10 @@
 #! /home/singh/.virtualenvs/cv/bin/python
 
-from inspect import stack
 import rospy
 import cv2
 import numpy as np
 from cv_bridge import CvBridge, CvBridgeError
 from rospy.exceptions import ROSException
-from rospy.timer import sleep
 from sensor_msgs.msg import Image
 from std_msgs.msg import Empty, Int32
 from Utils.circle_detection import get_centers
@@ -29,7 +27,6 @@ class PipeCounter:
         self.count = 0
         self.total_frames = 0
         self.skip_frames = 1
-        self.trackers = []
         self.tracked_objects = {}
 
         self.stacks = {
@@ -68,7 +65,6 @@ class PipeCounter:
         rects = []
         
         if self.total_frames % self.skip_frames == 0:
-            self.trackers = []
             circles = get_centers(cv_image)
     
             if circles is not None:
@@ -80,12 +76,12 @@ class PipeCounter:
                     endY = y + r
                     rects.append((startX, startY, endX, endY))
 
-        cv2.line(cv_image, 
-                (cv_image.shape[1]//2, 0), 
-                (cv_image.shape[1]//2, cv_image.shape[0]),
-                (0, 255, 0), 2)
-
         tracked_circles = self.centroid_tracker.update(rects, self.tracked_objects)
+
+        cv2.line(cv_image, 
+                (cv_image.shape[1]//2-70, 0), 
+                (cv_image.shape[1]//2-70, cv_image.shape[0]),
+                (0, 255, 0), 2)
     
         if tracked_circles is not None:
             for (objectID, centroid) in tracked_circles.items():
@@ -96,7 +92,7 @@ class PipeCounter:
                 
                 else:
                         if not tracked_object.isCounted:
-                            if centroid[0] == cv_image.shape[1]//2:
+                            if centroid[0] == cv_image.shape[1]//2-70:
                                 print("Counted ID: {}".format(objectID))
                                 self.count += 1
                                 tracked_object.isCounted = True
@@ -143,7 +139,7 @@ class PipeCounter:
         rospy.loginfo("pipe_counter: Counted Stack id: {}".format(self.stacks[str(self.stack_counted)]['id']))
 
         self.stack_counted += 1
-        
+
         self.image_sub.unregister()
 
         del self.centroid_tracker
