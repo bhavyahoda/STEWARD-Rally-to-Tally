@@ -2,3 +2,5 @@
 venv
 .DS_Store
 steward_perception/src/steward_perception/__pycache__
+steward_perception/src/steward_perception/Utils/__pycache__
+steward_influx_client/src/steward_influx_client/__pycache__/

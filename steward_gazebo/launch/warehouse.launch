@@ -3,7 +3,7 @@
     <arg name="realsense_enabled" default="true"/>
 
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
-        <arg name="world_name" value="$(find steward_gazebo)/worlds/large_pipe_stack.world"/>
+        <arg name="world_name" value="$(find steward_gazebo)/worlds/warehouse.world"/>
         <arg name="paused" value="false"/>
         <arg name="use_sim_time" value="true"/>
         <arg name="gui" value="true"/>
@@ -15,8 +15,10 @@
         <arg name="laser_enabled" value="$(arg laser_enabled)"/>
         <arg name="realsense_enabled" value="$(arg realsense_enabled)"/>
         <arg name='yaw' value="0.0" />
+        <arg name='x' value="-22.0" />
         <arg name="joystick" value="false" />
     </include> 
 
+    <node name="rover_stats_publisher" pkg="steward_handler" type="rover_stats_publisher.py" output="screen" />
 
 </launch>

@@ -6,7 +6,7 @@ from collections import OrderedDict
 import numpy as np
 
 class CentroidTracker():
-	def __init__(self, maxDisappeared=110):
+	def __init__(self, maxDisappeared=50):
 		# initialize the next unique object ID along with two ordered
 		# dictionaries used to keep track of mapping a given object
 		# ID to its centroid and number of consecutive frames it has
@@ -34,13 +34,13 @@ class CentroidTracker():
 		del self.disappeared[objectID]
 		self.nextObjectID -= 1
 
-	def update(self, rects):
+	def update(self, rects, tracked_objects):
 		# check to see if the list of input bounding box rectangles
 		# is empty
 		if len(rects) == 0:
 			# loop over any existing tracked objects and mark them
 			# as disappeared
-			for objectID in self.disappeared.keys():
+			for objectID in list(self.disappeared.keys()):
 				self.disappeared[objectID] += 1
 
 				# if we have reached a maximum number of consecutive
@@ -114,8 +114,14 @@ class CentroidTracker():
 				# set its new centroid, and reset the disappeared
 				# counter
 				objectID = objectIDs[row]
-				self.objects[objectID] = inputCentroids[col]
-				self.disappeared[objectID] = 0
+				
+				tracked_object = tracked_objects.get(objectID, None)
+				if tracked_object is not None:
+					if tracked_object.isCounted:
+						self.register(inputCentroids[col])
+					else:	
+						self.objects[objectID] = inputCentroids[col]
+						self.disappeared[objectID] = 0
 
 				# indicate that we have examined each of the row and
 				# column indexes, respectively
@@ -154,3 +160,6 @@ class CentroidTracker():
 
 		# return the set of trackable objects
 		return self.objects
+
+	def __del__(self):
+		print("Deleted Object")

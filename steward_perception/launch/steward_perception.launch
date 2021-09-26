@@ -8,4 +8,6 @@
         <remap from="image" to="pipe_counter/processed_image" />
     </node>
 
+    <node name="ros_influx_endpoint" pkg="steward_influx_client" type="ros_influx_subscriber.py" output="screen" />
+
 </launch>

@@ -4,7 +4,7 @@
 # python object_tracker.py --prototxt deploy.prototxt --model res10_300x300_ssd_iter_140000.caffemodel
 
 # import the necessary packages
-from centroidtracker import CentroidTracker
+from Utils.centroid_tracker import CentroidTracker
 from imutils.video import VideoStream
 import numpy as np
 import argparse
@@ -56,7 +56,7 @@ while True:
 	# net.setInput(blob)
 	# detections = net.forward()
 	rects = []
-	circles = cv2.HoughCircles(frame_gray, cv2.HOUGH_GRADIENT, 1, 10, param1=50, param2=35, minRadius=0, maxRadius=200)
+	circles = cv2.HoughCircles(frame_gray, cv2.HOUGH_GRADIENT, 1, 10, param1=50, param2=35, minRadius=0, maxRadius=40)
 	print(circles)
 
 	if circles is not None:
