@@ -160,3 +160,6 @@ class CentroidTracker():
 
 		# return the set of trackable objects
 		return self.objects
+
+	def __del__(self):
+		print("Deleted Object")
