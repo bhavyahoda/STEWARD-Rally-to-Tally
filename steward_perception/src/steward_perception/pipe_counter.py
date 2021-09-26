@@ -26,7 +26,6 @@ class PipeCounter:
         rospy.loginfo("pipe_counter: subscriber created") 
         
         self.img_bridge = CvBridge()
-        self.centroid_tracker = CentroidTracker()
         self.count = 0
         self.total_frames = 0
         self.skip_frames = 1
@@ -34,28 +33,31 @@ class PipeCounter:
         self.tracked_objects = {}
 
         self.stacks = {
-            'A': {
-                'pipe_od': '48inch',
+            '1': {
+                'id': 'A',
+                'pipe_od': '36',
                 'pipe_manu_type': 'seamless',
                 'pipe_material': 'steel'
             },
-            'B': {
-                'pipe_od': '24inch',
+            '2': {
+                'id': 'B',
+                'pipe_od': '48',
                 'pipe_manu_type': 'seamed',
                 'pipe_material': 'steel'
             },
-            'C': {
-                'pipe_od': '36inch',
+            '3': {
+                'id': 'C',
+                'pipe_od': '24',
                 'pipe_manu_type': 'seamed',
                 'pipe_material': 'steel'
             }
         }
 
-        self.stack_counted = 0
+        self.stack_counted = 1
         self.mission = '26 September 2021'
 
         self.image_pub = rospy.Publisher("/pipe_counter/processed_image", Image, queue_size=10)
-        self.stack_stats_pub = rospy.Publisher("/pipe_counter/stack_stats", StackStats, queue_size=10)
+        self.stack_stats_pub = rospy.Publisher("/stack_stats", StackStats, queue_size=10)
 
     def image_cb(self, image):
         try:
@@ -63,7 +65,6 @@ class PipeCounter:
         except CvBridgeError:
             rospy.logerr("pipe_counter: ERROR IN RECEIVING IMAGE")
 
-        frame_rgb = cv2.cvtColor(cv_image, cv2.COLOR_BGR2RGB)
         rects = []
         
         if self.total_frames % self.skip_frames == 0:
@@ -122,24 +123,31 @@ class PipeCounter:
 
         self.count = 0
 
+        self.centroid_tracker = CentroidTracker()
+
         self.image_sub = rospy.Subscriber("/image", Image, self.image_cb)
 
     def stop_counting_cb(self, msg):
         rospy.loginfo("pipe_counter: STOPPED COUNTING STACK")
 
         stack_stats_msg = StackStats()
-        stack_stats_msg.id = self.stacks[self.stack_counted]['id']
+        stack_stats_msg.id = self.stacks[str(self.stack_counted)]['id']
         stack_stats_msg.count = self.count
         stack_stats_msg.mission = self.mission
-        stack_stats_msg.pipe_manu_type = self.stacks[self.stack_counted]['pipe_manu_type']
-        stack_stats_msg.pipe_material = self.stacks[self.stack_counted]['pipe_material']
-        stack_stats_msg.pipe_od = self.stacks[self.stack_counted]['pipe_od']
+        stack_stats_msg.pipe_manu_type = self.stacks[str(self.stack_counted)]['pipe_manu_type']
+        stack_stats_msg.pipe_material = self.stacks[str(self.stack_counted)]['pipe_material']
+        stack_stats_msg.pipe_od = int(self.stacks[str(self.stack_counted)]['pipe_od'])
 
         self.stack_stats_pub.publish(stack_stats_msg)
 
-        rospy.loginfo("pipe_counter: Counted Stack id: {}".format(self.stacks[self.stack_counted]['id']))
+        rospy.loginfo("pipe_counter: Counted Stack id: {}".format(self.stacks[str(self.stack_counted)]['id']))
 
         self.stack_counted += 1
+        
+        self.image_sub.unregister()
+
+        del self.centroid_tracker
+
 
 
 if __name__ == "__main__":
